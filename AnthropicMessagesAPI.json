@@ -1,0 +1,152 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Anthropic Messages API",
+      "description": "API for sending messages to Anthropic's AI system",
+      "version": "1.0.0"
+    },
+    "host": "api.anthropic.com",
+    "basePath": "/v1",
+    "schemes": [
+      "https"
+    ],
+    "paths": {
+      "/messages": {
+        "post": {
+          "summary": "Send a message to Anthropic's AI system",
+          "description": "Sends a message to Anthropic's AI system and retrieves the response",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "The message to send to the AI system",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Message"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/Response"
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Message": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "max_tokens": {
+            "type": "integer"
+          },
+          "temperature": {
+            "type": "number",
+            "description": "Temperature controls the degree of randomness in the responses and its value ranges between 0 and 2. At zero, the outputs are more predictable and will stick closely to the most likely words."
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "a front-end service that receives messages returned by system-service in real time through websocket."
+          },
+          "system": {
+            "type": "string"
+          },
+          "messages": {
+            "type": "array",
+            "description": "The text of the message to send to the AI system",
+            "items": {
+                "$ref": "#/definitions/MessageValueData" 
+            }
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ResponseValueData"
+            }
+          },
+          "model": {
+            "type": "string"
+          },
+          "stop_reason": {
+            "type": "string"
+          },
+          "stop_sequence": {
+            "type": "string"
+          },
+          "usage": {
+            "type": "object",
+            "properties": {
+              "input_tokens": {
+                "type": "number"
+              },
+              "output_tokens": {
+                "type": "number"
+              }
+            }
+          },
+          "text": {
+            "type": "string",
+            "description": "The response from the AI system"
+          }
+        }
+      },
+      "MessageValueData":{
+        "type": "object",
+        "properties": {
+            "role":{
+                "type": "string"
+            },
+            "content":{
+                "type": "string"
+            }
+        }
+      },
+      "ResponseValueData":{
+        "type": "object",
+        "properties": {
+            "type":{
+                "type": "string"
+            },
+            "text":{
+                "type": "string"
+            }
+        }
+      }
+    }
+  }
